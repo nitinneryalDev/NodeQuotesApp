@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes App</title>
+</head>
+<style>
+    body {
+        background-color: #222f3e;
+    }
+.container {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50% , -50%);
+    width:50vw;
+    height: 70vh;
+    background-color: var(--main-color);
+    border-radius: 5px;
+    font-family: "dancing script" , cursive;
+    overflow: hidden;
+    color:#797d7f;
+    letter-spacing: 0.5px;
+    display: grid;
+    place-items: center;
+}
+
+.box {
+    position: absolute;
+    top:50%;
+    left:50%;
+    width:80%;
+    height:70%;
+    -webkit-transform: translate(-50% , -50%);
+    transform: translate(-50% , -50%);
+    background-color: #fff;
+    border-radius:5px;
+    overflow: hidden;
+    box-shadow:0 0 1.5rem rgba(0 , 0 , 0,  0.5 ) ;
+}
+
+.inner {
+    position: absolute;
+    height: 100%;
+    width:80%;
+    opacity: 1;
+    -webkit-transition: 1s;
+    transition:1s ;
+
+}
+
+.number img {
+    width:40px;
+    height:40px;
+    position:absolute;
+    top:-7px;
+    cursor: pointer;
+    animation:rot 1s linear;
+}
+
+.number:hover img {
+    animation:rot 1s linear;
+}
+
+@keyframes rot {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.quote {
+    position: absolute;
+    top:35%;
+    left:50%;
+    -webkit-transform: translate(-50% , -50%);
+    transform: translate(-59% , -50%);
+    width:80%;
+    font-size: 1.3rem;
+
+}
+
+
+</style>
+<body>
+    <div id="Quotes">
+
+    </div>
+    <div id="Author">
+
+    </div>
+    <button  id="NewQuote" onclick="" >New Quotes</button>
+    <button  id="TweetMe" onclick="" >Tweet Me</button>
+
+    <div class="container">
+        <div class="inner">
+            <div class="box">
+                <p class="number" >
+                      <img  src="https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg?size=338&ext=jpg&ga=GA1.1.1141335507.1718323200&semt=ais_user" alt="tweetMe" title="tweetMe" id="tweet"  >
+                </p>
+                <div class="text">
+                   <i class="start-quote fa-strong fa-quote-left"></i>
+                   <p id="quotes" class="quote" ></p>
+                   <p id="author" class="author" ></p>
+                </div>
+         <label class="button">
+            <p id="newQ">new Quotes</p>
+         </label>
+            </div>
+        </div>
+
+    </div>
+    <script>
+
+const quotes = document.getElementById('Quotes');
+const author = document.getElementById('Author');
+const NewQuote = document.getElementById('NewQuote')
+const tweetMe = document.getElementById('TweetMe')
+        let realData = " ";
+        let quotesData = " "
+
+
+        const  TweeTnow = () => {
+            let tweetPost =  `https://twitter.com/intent/tweet?text=${quotesData.text} ${quotesData.author}`
+            window.open(tweetPost)
+        }
+
+        const getNewQuote = () => {
+            let rname = Math.floor(Math.random() * 10);
+            let quotesData = realData[rname] ;
+            
+
+            quotes.innerText =   `${quotesData.text}`;
+            author.innerText =   `${quotesData.author}`;
+   quotesData   = null ? (author.innerText = `${quotesData.author}`)   
+                      : (author.innerText = `${quotesData.author}`)
+
+        }   
+
+
+      
+
+        const getQuotes = async () => {
+            const api = 'https://type.fit/api/quotes';
+            try {
+                    let data = await fetch(api);
+                realData =  await data.json();
+                getNewQuote();
+            } catch (error) {  }
+        }
+        
+        NewQuote.addEventListener( 'click'  , getNewQuote)
+        getQuotes()
+
+       
+
+
+        tweetMe.addEventListener( 'click'  , TweeTnow)
+        getQuotes()
+    </script>
+</body>
+
+</html>
